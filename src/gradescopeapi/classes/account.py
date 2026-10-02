@@ -72,6 +72,7 @@ class Account:
         Get a list of all users in a course
         Returns:
             list: A list of users in the course (Member objects)
+            None: If the roster request fails or its response cannot be read or parsed
         Raises:
             Exceptions:
             "One or more invalid parameters": if course_id is null or empty value
@@ -97,7 +98,11 @@ class Account:
             users = get_course_members(membership_soup, course_id)
 
             return users
-        except Exception:
+        except Exception as error:
+            print(
+                f"Failed to read or parse the roster for course {course_id}. "
+                f"Underlying error: {type(error).__name__}: {error}"
+            )
             return None
 
     def get_assignments(self, course_id: str) -> list[Assignment]:
